@@ -1,0 +1,14 @@
+#!/usr/bin/bash
+#
+#
+#  VPRcluster
+#
+#
+
+yum install pcs fence-agents-all
+firewall-cmd --permanent --add-service=high-availability
+firewall-cmd --add-service=high-availability
+passwd hacluster
+systemctl start pcsd.service
+systemctl enable pcsd.service
+yum -y install lvm2-cluster gfs2-utils

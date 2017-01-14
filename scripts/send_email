@@ -1,0 +1,21 @@
+#!/usr/bin/python
+
+import os, sys, subprocess, smtplib
+from email.mime.text import MIMEText
+
+msgbody = '\n VM dd command has completed \n'
+#
+msg = MIMEText( msgbody )
+msg['Subject'] = 'VPR VM dd Command has Completed'
+
+msg['From'] = 'root@rccc.ou.edu'
+msg['To'] = 'jsummers@ou.edu'
+
+# Send the message via our own SMTP server.
+
+s = smtplib.SMTP('smtp.ou.edu')
+s.sendmail( 'root@rccc.ou.edu', 'jsummers@ou.edu', msg.as_string())
+s.quit()
+
+sys.exit()
+#

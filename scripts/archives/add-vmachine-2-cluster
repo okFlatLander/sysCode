@@ -1,0 +1,20 @@
+#!/usr/bin/bash
+
+RES_ID="vm_Windows10"
+#VMXML="/mnt/data/vms/centos7.xml"
+VMXML="/etc/vmXML/Windows10.xml"
+
+pcs resource create \
+   $RES_ID \
+   VirtualDomain hypervisor="qemu:///system" \
+   config=$VMXML \
+   migration_transport=ssh op start timeout="120s" \
+   op stop timeout="120s" \
+   op monitor  timeout="30" interval="10" \
+   meta allow-migrate="true" \
+   priority="100" \
+   op migrate_from interval="0" \
+   timeout="120s" \
+   op migrate_to interval="0" \
+   timeout="120"
+#   --group VPR

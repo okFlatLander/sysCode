@@ -1,0 +1,16 @@
+#!/bin/bash
+
+/usr/sbin/clusvcadm -d vm:tago2
+sleep 2m
+/media/vm/scripts/send_start_email
+#
+#
+
+time dd bs=512k if=/dev/aoe/vm_tago2 | ssh root@vprblade2 'dd bs=512k of=/dev/vg_virtmachines/vm_tago2'
+
+time dd bs=512k if=/dev/aoe/data_tago2 | ssh root@vprblade2 'dd bs=512k of=/dev/vg_virtmachines/data_tago2'
+
+/media/vm/scripts/send_email
+
+
+

@@ -1,0 +1,70 @@
+#!/usr/bin/python
+
+import os, sys, subprocess, smtplib
+from email.mime.text import MIMEText
+
+command = '/usr/sbin/pcs'
+carg = 'status'
+
+ierr = 0
+virts = []
+msgbody = "\n"
+vm2find=''
+foundRow='\n\n'
+
+#print len(sys.argv)
+
+if ( len(sys.argv) > 1 ):
+    vm2find = sys.argv[1]
+#
+
+#proc = subprocess.Popen( [ command ], stdout=subprocess.PIPE, shell=True, universal_newlines=True )
+#( procout, err ) = proc.communicate()
+#proc.terminate
+commandOutput = subprocess.check_output( [command, carg] )
+for row in commandOutput.splitlines():
+    fields = []
+    if ( vm2find ):
+        if ( row.find( vm2find ) >= 0 ):
+            fields = row.split('\t')
+            vmName = fields[0].replace('vm_', '')
+            #print len(fields), vmName
+            #i = 0
+            #while i < len( fields ):
+            #    print i,':','\t',fields[i]
+            #    i = i+1
+            #
+            foundRow += 'Virtual Machine: ' + vmName + '\tStatus: ' + fields[2] + '\n'
+        #
+    else:
+        if ( row.find( 'vm_' ) >= 0 ):
+            fields = row.split('\t')
+            vmName = fields[0].replace('vm_', '')
+            foundRow += 'Virtual Machine: ' + vmName + '\tStatus: ' + fields[2] + '\n'
+        #
+    #
+#
+print foundRow
+sys.exit()
+msgbody = msgbody + procout + '\n'
+msgbody = msgbody + '\n'
+#
+msg = MIMEText( msgbody )
+msg['Subject'] = 'VPR VM Status'
+if ( procout.find('Stopped') >= 0 ):
+    msg['Subject'] = 'VPR Cluster Status - STOPPED Resource Detected'
+#
+if ( procout.find('OFFLINE') >= 0 ):
+    msg['Subject'] = 'VPR Cluster Status - OFFLINE Node Detected'
+#
+msg['From'] = 'root@rccc.ou.edu'
+msg['To'] = 'jsummers@ou.edu'
+
+# Send the message via our own SMTP server.
+
+s = smtplib.SMTP('smtp.ou.edu')
+s.sendmail( 'root@rccc.ou.edu', 'jsummers@ou.edu', msg.as_string())
+s.quit()
+
+sys.exit()
+#

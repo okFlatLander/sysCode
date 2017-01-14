@@ -1,0 +1,23 @@
+#!/usr/bin/bash
+
+VMHOST="vm-test"
+VMHOSTXML="centos7.0.xml"
+VMHOSTNAME="vmtest"
+echo $VMHOST
+echo $VMHOSTXML
+echo $VMHOSTNAME
+#
+#pcs resource create \
+#   vm-guest1 \
+#   VirtualDomain \
+#   hypervisor="qemu:///system" \
+#   config="/virtual_machines/vm-guest1.xml" \
+#   meta remote-node=guest1
+#
+#
+pcs resource create \
+   $VMHOST \
+   VirtualDomain \
+   hypervisor="qemu:///system" \
+   config="/mnt/data/vms/"$VMHOSTXML \
+   meta remote-node=$VMHOSTNAME

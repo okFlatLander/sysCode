@@ -1,0 +1,7 @@
+#!/bin/bash
+
+#clusvcadm -d vm:persiko; clusvcadm -e vm:persiko
+
+/usr/sbin/pcs resource disable vm_persiko; sleep 1m; /usr/sbin/pcs resource enable vm_persiko
+
+

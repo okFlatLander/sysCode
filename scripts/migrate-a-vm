@@ -1,0 +1,16 @@
+#!/bin/bash
+
+/usr/sbin/clusvcadm -d vm:kkd
+sleep 2m
+/media/vm/scripts/send_start_email
+#
+#
+
+time dd bs=512k if=/dev/aoe/vm_kkd | ssh root@vprblade2 'dd bs=512k of=/dev/vg_virtmachines/vm_kkd'
+
+#time dd bs=512k if=/dev/aoe/data_web | ssh root@vprblade2 'dd bs=512k of=/dev/vg_virtmachines/data_web'
+
+/media/vm/scripts/send_email
+
+
+

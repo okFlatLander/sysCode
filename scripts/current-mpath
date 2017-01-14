@@ -1,0 +1,5 @@
+mpathc (36000d310034008000000000000000007) dm-2 COMPELNT,Compellent Vol  
+size=2.0T features='1 queue_if_no_path' hwhandler='0' wp=rw
+`-+- policy='service-time 0' prio=0 status=active
+  |- 14:0:0:1 sdc 8:32 active undef running
+  `- 12:0:0:1 sdd 8:48 active undef running

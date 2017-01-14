@@ -1,0 +1,77 @@
+#!/usr/bin/python
+
+import os, sys, subprocess, smtplib
+from email.mime.text import MIMEText
+
+ping_command = "/bin/ping"
+pcarg0 = '-W 1'
+pcarg1 = '-c 1'
+pcarg2 = 'vmtest3.rccc.ou.edu'
+#
+command = '/usr/sbin/pcs'
+carg = 'status'
+
+ierr = 0
+virts = []
+msgbody = "\n"
+vm2find='vm_centos7'
+foundRow='\n\n'
+
+try:
+    commandOutput = subprocess.check_output( [ping_command, pcarg0, pcarg1, pcarg2] )
+    # print commandOutput
+    sys.exit( 0 )
+except:
+    print 'Houston, we have a problem.'
+    commandOutput = subprocess.check_output( [command, carg] )
+    for row in commandOutput.splitlines():
+        fields = []
+        getchost = []
+        if ( vm2find ):
+            if ( row.find( vm2find ) >= 0 ):
+                fields = row.split('\t')
+                getchost = fields[2].split()
+                print getchost[1]
+                #vmName = fields[0].replace('vm_', '')
+                #print len(fields), vmName
+                i = 0
+                while i < len( fields ):
+                    print i,':','\t',fields[i]
+                    i = i+1
+                #
+                #foundRow += 'Virtual Machine: ' + vmName + '\tStatus: ' + fields[2] + '\n'
+            #
+        else:
+            if ( row.find( 'vm_' ) >= 0 ):
+                fields = row.split('\t')
+                vmName = fields[0].replace('vm_', '')
+                foundRow += 'Virtual Machine: ' + vmName + '\tStatus: ' + fields[2] + '\n'
+            #
+        #
+    #
+#
+print foundRow
+sys.exit()
+
+msgbody = msgbody + procout + '\n'
+msgbody = msgbody + '\n'
+#
+msg = MIMEText( msgbody )
+msg['Subject'] = 'VPR VM Status'
+if ( procout.find('Stopped') >= 0 ):
+    msg['Subject'] = 'VPR Cluster Status - STOPPED Resource Detected'
+#
+if ( procout.find('OFFLINE') >= 0 ):
+    msg['Subject'] = 'VPR Cluster Status - OFFLINE Node Detected'
+#
+msg['From'] = 'root@rccc.ou.edu'
+msg['To'] = 'jsummers@ou.edu'
+
+# Send the message via our own SMTP server.
+
+s = smtplib.SMTP('smtp.ou.edu')
+s.sendmail( 'root@rccc.ou.edu', 'jsummers@ou.edu', msg.as_string())
+s.quit()
+
+sys.exit()
+#

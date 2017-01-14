@@ -1,0 +1,10 @@
+#!/usr/bin/bash
+
+iscsiadm -m discovery -t st -p 192.168.100.100:3260
+iscsiadm -m discovery -t st -p 192.168.101.100:3260
+iscsiadm -m node -l
+iscsiadm -m node -T  iqn.2002-03.com.compellent:5000d3100340081f
+iscsiadm -m node -T  iqn.2002-03.com.compellent:5000d31003400821
+iscsiadm -m node -T   iqn.2002-03.com.compellent:5000d3100340081e
+iscsiadm -m node -T  iqn.2002-03.com.compellent:5000d31003400820
+

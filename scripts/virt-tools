@@ -1,0 +1,15 @@
+#!/usr/bin/bash
+
+yum -y install \
+   virt-install \
+   virt-manager \
+   virt-manager-common \
+   virt-top \
+   virt-v2v \
+   virt-viewer
+
+yum -y groupinstall \
+   virtualization-client \
+   virtualization-platform \
+   virtualization-tools
+

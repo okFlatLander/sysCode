@@ -1,0 +1,12 @@
+#!/usr/bin/bash
+
+#pcs stonith create scsi-shooter fence_scsi \
+#   devices=/dev/disk/by-id/wwn-0x6000d310034008000000000000000008 \
+#   meta \
+#   provides=unfencing
+
+pcs stonith create scsifence \
+   fence_scsi \
+   pcmk_host_list="vprblade1 vprblade2 vprblade3" \
+   pcmk_reboot_action="off" \
+   meta provides="unfencing" --force
